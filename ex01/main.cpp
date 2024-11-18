@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	//normalTests();
 	//exceptionTests();
 	//spacesTests();
-	return(0);
+	//return(0);
 	if (argc != 2)
 	{
 		std::cout << "Error" << std::endl;

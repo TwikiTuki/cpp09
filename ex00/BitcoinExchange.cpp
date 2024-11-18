@@ -101,7 +101,7 @@ day_count BitcoinExchange::monthToDays(day_count month)
 	}
 }
 
-day_count BitcoinExchange::monthAcumulatedDays(day_count month) // TODO Could acces its own array instead of adding all the months
+day_count BitcoinExchange::monthAcumulatedDays(day_count month) // TODO Could generate and acces its own array instead of adding all the months
 {
 	day_count acumulated = 0;
 	for(day_count i = 1; i < month; i++)
@@ -133,16 +133,7 @@ float	BitcoinExchange::getPrice(const std::string& date)
 
 float	BitcoinExchange::getPrice(day_count date)
 {
-	while (date > 0)
-	{
-		try
-		{
-			return(this->btcPrice.at(date));
-		}
-		catch (std::out_of_range& e) { }
-		date--;
-	}
-	return (-1);
+	return this->btcPrice.lower_bound(date);
 }
 
 void	BitcoinExchange::printHistoryValues(const std::string& walletHistoryFileName)
@@ -292,7 +283,7 @@ std::string BitcoinExchange::dateStrFromFile(std::ifstream& file, char sep)
 		dateStr.append(1, c);
 		file.get(c);
 	}
-	if (c == '\n')				//Very wierd but works. if it gets till the end of line on datStrFrom file its an error. When an error ocurs its not suposed to change the line so I addid back right here. The error handling is somwhere else.
+	if (c == '\n')				//Very wierd but works. If it gets till the end of line on datStrFrom file its an error. When an error ocurs its not suposed to change the line so I add it back right here. The error handling is when is not able to parse the next parameter.
 		file.putback('\n');
 	cleanBlank(dateStr);
 
@@ -310,7 +301,7 @@ day_count BitcoinExchange::parseDateKeyFromPricesFile(std::ifstream& prices, cha
 	date = btce::dateStrToDays(dateStr);
 	if (date == 0)
 	{
-		std::cout << "ERROR invalid date " << dateStr << std::endl; // TODO should not appear on first line
+		std::cout << "ERROR invalid date " << dateStr << std::endl;
 		return (0);
 	}
 	return (date);

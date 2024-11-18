@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 		duration0 = doTest(numbers, queueSorter);
 		duration1 = doTest(numbers, vectorSorter);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		std::cout << "ERROR" << std::endl;
 		return (1);
