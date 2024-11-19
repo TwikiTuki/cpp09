@@ -133,7 +133,7 @@ float	BitcoinExchange::getPrice(const std::string& date)
 
 float	BitcoinExchange::getPrice(day_count date)
 {
-	return this->btcPrice.lower_bound(date);
+	return (this->btcPrice.lower_bound(date))->second;
 }
 
 void	BitcoinExchange::printHistoryValues(const std::string& walletHistoryFileName)
