@@ -37,7 +37,7 @@ class BitcoinExchange
 		static					std::map<day_count, day_count> INITIALIZE_DAYS_IN_A_MONTH();
 		static					bool isLeap(day_count year);
 		static day_count		monthToDays(day_count month);
-		static day_count 		monthAcumulatedDays(day_count month);
+		static day_count 		monthAccumulatedDays(day_count month);
 		static std::string 		dateStrFromFile(std::ifstream& file, char sep);
 
 		bool					loadPrices(std::string fileName);

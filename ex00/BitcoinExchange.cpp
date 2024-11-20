@@ -101,14 +101,14 @@ day_count BitcoinExchange::monthToDays(day_count month)
 	}
 }
 
-day_count BitcoinExchange::monthAcumulatedDays(day_count month) // TODO Could generate and acces its own array instead of adding all the months
+day_count BitcoinExchange::monthAccumulatedDays(day_count month) // TODO Could generate and acces its own array instead of adding all the months
 {
-	day_count acumulated = 0;
+	day_count accumulated = 0;
 	for(day_count i = 1; i < month; i++)
 	{
-		acumulated +=  btce::monthToDays(i);
+		accumulated +=  btce::monthToDays(i);
 	}
-	return(acumulated);
+	return(accumulated);
 }
 
 bool BitcoinExchange::loadPrices(std::string fileName)
@@ -157,8 +157,8 @@ bool	BitcoinExchange::printHistoryLineValue(std::ifstream& walletHistory)
 {
 	std::string		dateStr;
 	day_count		date;
-	std::string		ammountStr;
-	float			ammount;
+	std::string		amountStr;
+	float			amount;
 	char			c;
 	float			price;
 
@@ -174,20 +174,20 @@ bool	BitcoinExchange::printHistoryLineValue(std::ifstream& walletHistory)
 	c = walletHistory.get();
 	while(c != '\n')
 	{
-		ammountStr += c;
+		amountStr += c;
 		c = walletHistory.get();
 	}
-	cleanBlank(ammountStr);
-	if (!checkFloatStr(ammountStr))
+	cleanBlank(amountStr);
+	if (!checkFloatStr(amountStr))
 	{
-		std::cout << "Invalid ammount (min 0.0, max 1000.0): " << ammountStr << std::endl;;
+		std::cout << "Invalid amount (min 0.0, max 1000.0): " << amountStr << std::endl;;
 		walletHistory.putback('\n');
 		return(false);
 	}
-	ammount = std::atof(ammountStr.c_str());
-	if (ammount < 0 || ammount > 1000)
+	amount = std::atof(amountStr.c_str());
+	if (amount < 0 || amount > 1000)
 	{
-		std::cout << "Ammout out of range (min 0.0, max 1000.0): " << ammountStr << "." << std::endl;;
+		std::cout << "Amout out of range (min 0.0, max 1000.0): " << amountStr << "." << std::endl;;
 		walletHistory.putback('\n');
 		return (false);
 	}
@@ -198,7 +198,7 @@ bool	BitcoinExchange::printHistoryLineValue(std::ifstream& walletHistory)
 		walletHistory.putback('\n');
 		return (false);
 	}
-	std::cout << dateStr << " => " << ammount << " = " << ammount * price << std::endl;
+	std::cout << dateStr << " => " << amount << " = " << amount * price << std::endl;
 	return (true);
 }
 
@@ -229,7 +229,7 @@ day_count BitcoinExchange::dateStrToDays(const std::string& strDate)
 	date.year %= 4;
 	result +=  ((date.year)) * btce::DAYS_IN_1_YEARS;
 
-	result += btce::monthAcumulatedDays(date.month);
+	result += btce::monthAccumulatedDays(date.month);
 	result += + date.day;
 
 	return (result);
@@ -283,7 +283,7 @@ std::string BitcoinExchange::dateStrFromFile(std::ifstream& file, char sep)
 		dateStr.append(1, c);
 		file.get(c);
 	}
-	if (c == '\n')				//Very wierd but works. If it gets till the end of line on datStrFrom file its an error. When an error ocurs its not suposed to change the line so I add it back right here. The error handling is when is not able to parse the next parameter.
+	if (c == '\n')				//Very weird but works. If it gets till the end of line on datStrFrom file its an error. When an error ocurs its not supposed to change the line so I add it back right here. The error handling is when is not able to parse the next parameter.
 		file.putback('\n');
 	cleanBlank(dateStr);
 
